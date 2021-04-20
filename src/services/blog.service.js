@@ -14,11 +14,11 @@ class BudgetDataService {
   }
 
   updateById(id, data) {
-    return http.put(`/budget/${id}`, data);
+    return http.put(`/posts/${id}`, data);
   }
 
   deleteById(id) {
-    return http.delete(`/budget/${id}`);
+    return http.delete(`/posts/${id}`);
   }
 }
 

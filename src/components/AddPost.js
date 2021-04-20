@@ -22,11 +22,11 @@ function Home() {
       <h1>Agregar post</h1>
       <form onSubmit={savePost}>
         Título del Post
-        <input type="text" name="title" onChange={handleInput} />
+        <input type="text" name="title" onChange={handleInput} value={post.title}/>
         Cuerpo del post:
-        <input type="textarea" name="body" onChange={handleInput} />
+        <input type="textarea" name="body" onChange={handleInput} value={post.body}/>
         Id del usuario:
-        <input type="number" name="userId" onChange={handleInput} />
+        <input type="number" name="userId" onChange={handleInput} value={post.userId}/>
         <button type="submit">Enviar</button>
       </form>
     </main>
