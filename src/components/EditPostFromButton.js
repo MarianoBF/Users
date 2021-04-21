@@ -29,10 +29,11 @@ function EditPostFromButton(props) {
   };
 
   return (
-    <main>
+    <div>
       <Col span={12} offset={6}>
         <h1 className="centeredTitle">Editar post</h1>
-        <Form {...formLayout} onSubmit={savePost} size="large">
+        <p>Desde aquí podés editar el post con id {post.id} </p>
+        <Form {...formLayout} onSubmit={savePost} size="lg">
           <Form.Item label="Título del post">
             <Input
               type="text"
@@ -62,12 +63,12 @@ function EditPostFromButton(props) {
             />
           </Form.Item>
 
-          <Button className="centeredButton" danger>Cancelar Edicion</Button>{"  "}
-          <Button className="centeredButton" type="primary" htmlType="submit">Enviar</Button>
+          <Button className="rightAlignedButtons" onClick={props.handleCancel} danger>Cancelar Edicion</Button>{"  "}
+          <Button className="rightAlignedButtons" type="primary" htmlType="submit">Enviar</Button>
 
         </Form>
       </Col>
-    </main>
+    </div>
   );
 }
 

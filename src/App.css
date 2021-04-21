@@ -19,3 +19,9 @@
     font-size: 12px;
     font-weight: 300;
 }
+
+.rightAlignedButtons {
+    display: block;
+    margin: 2vh 0;
+    margin-left: auto;
+}

@@ -95,12 +95,11 @@ function EditPostFromMenu(props) {
             />
           </Form.Item>
 
-          <Button className="centeredButton" danger>
-            Cancelar Edicion
-          </Button>
-          {"  "}
-          <Button className="centeredButton" type="primary" htmlType="submit">
+          <Button className="rightAlignedButtons" onClick={props.handleCancel} type="primary" htmlType="submit">
             Enviar
+          </Button>
+          <Button className="rightAlignedButtons" danger>
+            Cancelar Edicion
           </Button>
         </Form>
       </Col>

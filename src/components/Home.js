@@ -7,13 +7,16 @@ import Details from "./Details";
 import {Button} from "antd";
 
 function Home(props) {
+  const [selection, setSelection] = useState();
+
   const [postList, setPostList] = useState([]);
 
   useEffect(() => {
+    setSelection(props.selection);
     BlogService.getAllPosts()
       .then(res => setPostList(res.data))
       .catch(error => console.log(error));
-  }, []);
+  }, [props]);
 
   const [editMode, setEditMode] = useState(false);
   const [postToEdit, setPostToEdit] = useState();
@@ -36,6 +39,11 @@ function Home(props) {
       .catch(error => console.log(error));
   };
 
+  const handleCancel = () => {
+    setEditMode(false);
+    setSelection("home");
+  };
+
   const postListDisplay = postList.slice(0, 5).map(item => (
     <div className="postContainer" key={item.id}>
       <h2 className="postTitle">Title: {item.title}</h2>
@@ -45,10 +53,10 @@ function Home(props) {
       <Button onClick={() => handleDelete(item.id)}>Borrar Post</Button>
     </div>
   ));
-
+  
   return (
     <main>
-      {props.selection === "home" && !editMode && (
+      {selection === "home" && !editMode && (
         <>
           <h1>Listado de posts</h1>
           {postListDisplay}
@@ -62,13 +70,15 @@ function Home(props) {
           handleDelete={handleDelete}
         />
       )}
-      {props.selection === "edit" && 
-        <EditPostFromMenu />
-      }
-      {editMode && 
-        <EditPostFromButton post={postToEdit} />
-      }
-      {props.selection === "add" && <AddPost />}
+      {!editMode && selection === "edit" && (
+        <EditPostFromMenu handleCancel={handleCancel} />
+      )}
+      {editMode && (
+        <EditPostFromButton handleCancel={handleCancel} post={postToEdit} />
+      )}
+      {!editMode && selection === "add" && (
+        <AddPost handleCancel={handleCancel} />
+      )}
     </main>
   );
 }

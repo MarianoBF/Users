@@ -1,7 +1,8 @@
 import {useState} from "react";
 import BlogService from "../services/blog.service";
+import {Form, Input, Col, Button} from "antd";
 
-function Home() {
+function AddPost(props) {
   const initialValue = {
     title: "",
     body: "",
@@ -23,35 +24,58 @@ function Home() {
     setPost({...post, [name]: value});
   };
 
+  const formLayout = {
+    labelCol: {span: 8},
+    wrapperCol: {span: 16},
+  };
+
   return (
-    <main>
-      <h1>Agregar post</h1>
-      <form onSubmit={savePost}>
-        Título del Post
-        <input
-          type="text"
-          name="title"
-          onChange={handleInput}
-          value={post.title}
-        />
-        Cuerpo del post:
-        <input
-          type="textarea"
-          name="body"
-          onChange={handleInput}
-          value={post.body}
-        />
-        Id del usuario:
-        <input
-          type="number"
-          name="userId"
-          onChange={handleInput}
-          value={post.userId}
-        />
-        <button type="submit">Enviar</button>
-      </form>
-    </main>
+    <div>
+      <Col span={12} offset={6}>
+        <h1>Agregar post</h1>
+        <p>Desde aquí podés agregar un nuevo post </p>
+        <Form {...formLayout} onSubmit={savePost}>
+          <Form.Item label="Título del post">
+            <Input
+              type="text"
+              name="title"
+              onChange={handleInput}
+              value={post.title}
+            />
+          </Form.Item>
+
+          <Form.Item label="Cuerpo del post">
+            <Input
+              type="textarea"
+              name="body"
+              onChange={handleInput}
+              value={post.body}
+            />
+          </Form.Item>
+
+          <Form.Item label="Id del usuario">
+            <Input
+              type="number"
+              name="userId"
+              onChange={handleInput}
+              value={post.userId}
+            />
+          </Form.Item>
+
+          <Button className="rightAlignedButtons" danger onClick={props.handleCancel}>
+            Cancelar Edicion
+          </Button>
+          {"  "}
+          <Button
+            className="rightAlignedButtons"
+            type="primary"
+            htmlType="submit">
+            Enviar
+          </Button>
+        </Form>
+      </Col>
+    </div>
   );
 }
 
-export default Home;
+export default AddPost;
