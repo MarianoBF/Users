@@ -1,7 +1,8 @@
 import {useState, useEffect} from "react";
 import BlogService from "../services/blog.service";
 import AddPost from "./AddPost";
-import EditPost from "./EditPost";
+import EditPostFromButton from "./EditPostFromButton";
+import EditPostFromMenu from "./EditPostFromMenu";
 import Details from "./Details";
 import {Button} from "antd";
 
@@ -47,8 +48,12 @@ function Home(props) {
 
   return (
     <main>
-      <h1>Listado de posts</h1>
-      {props.selection === "home" && !editMode && postListDisplay}
+      {props.selection === "home" && !editMode && (
+        <>
+          <h1>Listado de posts</h1>
+          {postListDisplay}
+        </>
+      )}
       {detailsMode && (
         <Details
           post={postToShow}
@@ -57,9 +62,12 @@ function Home(props) {
           handleDelete={handleDelete}
         />
       )}
-      {(props.selection === "edit" || editMode) && (
-        <EditPost post={postToEdit} />
-      )}
+      {props.selection === "edit" && 
+        <EditPostFromMenu />
+      }
+      {editMode && 
+        <EditPostFromButton post={postToEdit} />
+      }
       {props.selection === "add" && <AddPost />}
     </main>
   );
