@@ -2,7 +2,12 @@ import {useState} from "react";
 import BlogService from "../services/blog.service";
 
 function Home(props) {
-  const [post, setPost] = useState(props.post);
+  const initialValue = {
+    title: "",
+    body: "",
+    usetId: 0,
+  };
+  const [post, setPost] = useState(props.post || initialValue);
 
   const savePost = e => {
     e.preventDefault();

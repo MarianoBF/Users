@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 .postContainer {
     border: 1px solid black;
     max-width: 80vw;

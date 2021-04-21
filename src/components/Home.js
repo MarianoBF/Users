@@ -1,11 +1,11 @@
 import {useState, useEffect} from "react";
 import BlogService from "../services/blog.service";
-import AddPost from "./AddPost"
-import EditPost from "./EditPost"
-import Details from "./Details"
+import AddPost from "./AddPost";
+import EditPost from "./EditPost";
+import Details from "./Details";
+import {Button} from "antd";
 
-
-function Home() {
+function Home(props) {
   const [postList, setPostList] = useState([]);
 
   useEffect(() => {
@@ -16,49 +16,51 @@ function Home() {
 
   const [editMode, setEditMode] = useState(false);
   const [postToEdit, setPostToEdit] = useState();
-  const handleEdit = (post) => {
-      setEditMode(true)
-      setPostToEdit(post)
-  } 
-
-  const [addMode, setAddMode] = useState(false);
-  const handleAdd = () => {
-      setAddMode(true);
-  }
-
+  const handleEdit = post => {
+    setEditMode(true);
+    setDetailsMode(false);
+    setPostToEdit(post);
+  };
 
   const [detailsMode, setDetailsMode] = useState(false);
   const [postToShow, setPostToShow] = useState();
-  const handleDetails = (item) => {
+  const handleDetails = item => {
     setDetailsMode(true);
-    setPostToShow(item)
-  }
+    setPostToShow(item);
+  };
 
-  const handleDelete = (id) => {
+  const handleDelete = id => {
     BlogService.deleteById(id)
       .then(res => console.log(res))
       .catch(error => console.log(error));
-  }
+  };
 
   const postListDisplay = postList.slice(0, 5).map(item => (
     <div className="postContainer" key={item.id}>
       <h2 className="postTitle">Title: {item.title}</h2>
       <p className="postUser">User id: {item.userId} </p>{" "}
-      <button onClick={()=>handleDetails(item)}>Ver detalle de Post</button>
-      <button onClick={()=>handleEdit(item)}>Editar Post</button>
-      <button onClick={()=>handleDelete(item.id)}>Borrar Post</button>
-
+      <Button onClick={() => handleDetails(item)}>Ver detalle de Post</Button>
+      <Button onClick={() => handleEdit(item)}>Editar Post</Button>
+      <Button onClick={() => handleDelete(item.id)}>Borrar Post</Button>
     </div>
   ));
 
   return (
     <main>
       <h1>Listado de posts</h1>
-      <button onClick={handleAdd}>Agregar post</button>
-      {postListDisplay}
-      {detailsMode && <Details post={postToShow}/>} 
-      {editMode && <EditPost post={postToEdit}/>} 
-      {addMode && <AddPost />}
+      {props.selection === "home" && !editMode && postListDisplay}
+      {detailsMode && (
+        <Details
+          post={postToShow}
+          visible={true}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+        />
+      )}
+      {(props.selection === "edit" || editMode) && (
+        <EditPost post={postToEdit} />
+      )}
+      {props.selection === "add" && <AddPost />}
     </main>
   );
 }
