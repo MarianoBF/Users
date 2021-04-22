@@ -1,29 +1,32 @@
 import {Modal, Button} from "antd";
-import {useState} from "react";
+import {Space, Alert, Divider} from "antd";
 
 function Details(props) {
-
-  const [visible, setVisible] = useState(props.visible);
-
   return (
     <div>
       <Modal
-        title="Detalles del post:"
+        title="Detalles del Usuario:"
         centered
-        visible={visible}
-        cancelText={"a"}
+        closable={false}
+        visible={props.visible}
+        cancelButtonProps={{style: {display: "none"}}}
         okText={"Cerrar"}
-        onOk={() => setVisible(false)}
-        >
-        <h2 className="postTitle">Title: {props.post.title}</h2>
-        <p className="postUser">User id: {props.post.userId} </p>{" "}
-        <p className="postUser">Texto: {props.post.body} </p>{" "}
-        <Button onClick={() => props.handleEdit(props.post)}>
-          Editar Post
-        </Button>
-        <Button danger onClick={() => props.handleDelete(props.post.id)}>
-          Borrar Post
-        </Button>
+        onOk={props.handleClose}>
+        <p>Nombre: {props.user.first_name}</p>
+        <p>Apellido: {props.user.last_name} </p>{" "}
+        <p>Email: {props.user.email} </p>{" "}
+        <Space>
+          <Button onClick={() => props.handleEdit(props.user)}>
+            Editar Usuario
+          </Button>
+          <Button danger onClick={() => props.handleDelete(props.user.id)}>
+            Borrar Usuario
+          </Button>
+        </Space>
+        <Divider />
+        {props.success && (
+          <Alert message="Usuario borrado con éxito" type="info" />
+        )}
       </Modal>
     </div>
   );
