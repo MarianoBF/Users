@@ -58,7 +58,10 @@ function EditPostFromMenu(props) {
             <Input
               type="number"
               name="Id"
+              min="1"
+              max="100"
               onChange={handleSelect}
+              disabled={!disabled}
               value={selectedPost}
             />
           </Form.Item>
@@ -95,10 +98,10 @@ function EditPostFromMenu(props) {
             />
           </Form.Item>
 
-          <Button className="rightAlignedButtons" onClick={props.handleCancel} type="primary" htmlType="submit">
+          <Button className="rightAlignedButtons" type="primary" htmlType="submit">
             Enviar
           </Button>
-          <Button className="rightAlignedButtons" danger>
+          <Button className="rightAlignedButtons" onClick={props.handleCancel} danger>
             Cancelar Edicion
           </Button>
         </Form>

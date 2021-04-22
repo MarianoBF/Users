@@ -4,7 +4,7 @@ import AddPost from "./AddPost";
 import EditPostFromButton from "./EditPostFromButton";
 import EditPostFromMenu from "./EditPostFromMenu";
 import Details from "./Details";
-import {Button, Col, Row, Space, Alert} from "antd";
+import {Button, Col, Row, Alert} from "antd";
 
 function Home(props) {
   const [selection, setSelection] = useState();
@@ -61,9 +61,8 @@ function Home(props) {
   const postListDisplay = postList.slice(0, 5).map(item => (
     <div className="postContainer" key={item.id}>
       <h2 className="postTitle">Title: {item.title}</h2>
-      <Row justify="center">
-        {" "}
-        <Space>
+      <Row justify="space-around">
+        <Col xs={{span: 24}} sm={{span:18, push: 3}}>
           <Button type="primary" onClick={() => handleDetails(item)}>
             Ver detalle de Post
           </Button>{" "}
@@ -71,7 +70,7 @@ function Home(props) {
           <Button danger onClick={() => handleDelete(item.id)}>
             Borrar Post
           </Button>
-        </Space>
+          </Col>
       </Row>
     </div>
   ));
@@ -79,7 +78,7 @@ function Home(props) {
   return (
     <main>
       {selection === "home" && !editMode && (
-        <Col span={18} offset={3}>
+        <Col xs={{ span: 24}} lg={{ span: 12, offset: 6 }}>
           <h1>Listado de posts</h1>
           {showDeleted && !detailsMode && (
               <Alert message="Post borrado con éxito" type="info" />
