@@ -22,7 +22,6 @@ function EditUserFromMenu() {
     wrapperCol: {span: 16},
   };
 
-  const [user, setUser] = useState();
   const [selectedUser, setSelectedUser] = useState(0);
   const [disabled, setDisabled] = useState(true);
 
@@ -36,7 +35,6 @@ function EditUserFromMenu() {
       .catch(error => {
         console.log(error);
         setDisabled(true);
-        setUser();
       });
   };
 
@@ -49,17 +47,16 @@ function EditUserFromMenu() {
       <Col span={12} offset={6}>
         <h1 className="centeredTitle">Editar Usuario</h1>
         <p>
-          En esta opción podés elegir el usuario a editar, para editar
+          En esta opción podés elegir el usuario a editar. Si en todo caso querés editar
           directamente desde un usuario, hacé click sobre la opción "editar" al
-          pie del mismo
+          pie del mismo.
         </p>
 
         <Form
           {...formLayout}
           form={form}
           name="control-hooks"
-          onFinish={onFinish}
-          initialValues={{...user}}>
+          onFinish={onFinish}>
           <Form.Item label="Id del usuario a editar">
             <Input
               type="number"

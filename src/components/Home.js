@@ -56,7 +56,6 @@ function Home(props) {
     <div className="userContainer" key={item.id}>
       <h2>Nombre: {item.first_name}</h2>
       <Row justify="space-around">
-        <Col xs={{span: 24}} sm={{span: 18, push: 3}}>
           <Button type="primary" onClick={() => handleDetails(item)}>
             Ver detalle de Usuario
           </Button>{" "}
@@ -64,7 +63,6 @@ function Home(props) {
           <Button danger onClick={() => handleDelete(item.id)}>
             Borrar Usuario
           </Button>
-        </Col>
       </Row>
     </div>
   ));
