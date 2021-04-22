@@ -9,7 +9,7 @@ function AddPost() {
 
   const onFinish = (values) => {
     console.log(values)
-    const data = {title: values.title, body: values.body, userId: values.userId};
+    const data = {name: values.title, job: values.body, userId: values.userId};
     BlogService.createPost(data)
       .then(res => {
         console.log(res.data);
@@ -42,7 +42,10 @@ function AddPost() {
           </Form.Item>
 
           <Form.Item label="Cuerpo del post" name="body">
-            <Input type="textarea" />
+            <Input.TextArea 
+                          showCount
+              maxLength={500}
+              autoSize={{ minRows: 2, maxRows: 10 }} />
           </Form.Item>
 
           <Form.Item label="Id del usuario" name="userId">

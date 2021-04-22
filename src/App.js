@@ -5,10 +5,12 @@ import EditPostFromMenu from "./components/EditPostFromMenu"
 import {useState} from "react";
 import {Menu} from "antd";
 import {HomeOutlined, EditOutlined, FileAddOutlined} from "@ant-design/icons";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link, useLocation } from "react-router-dom";
 
 function App() {
-  const [selected, setSelected] = useState("home");
+  const location = useLocation();
+
+  const [selected, setSelected] = useState(location.pathname);
 
   const handleClick = e => {
     setSelected(e.key);
@@ -18,13 +20,13 @@ function App() {
     <div>
       {/* <Navbar menuSelect={selection => menuSelect(selection)} /> */}
       <Menu onClick={handleClick} selectedKeys={selected} mode="horizontal">
-        <Menu.Item key="home" icon={<HomeOutlined />}><Link to={"/"}>
+        <Menu.Item key="/" icon={<HomeOutlined />}><Link to={"/"}>
           Principal</Link>
         </Menu.Item>
-        <Menu.Item key="edit" icon={<EditOutlined />}><Link to={"/edit"}>
+        <Menu.Item key="/edit" icon={<EditOutlined />}><Link to={"/edit"}>
           Editar entradas</Link>
         </Menu.Item>
-        <Menu.Item key="add" icon={<FileAddOutlined />}><Link to={"/add"}>
+        <Menu.Item key="/add" icon={<FileAddOutlined />}><Link to={"/add"}>
           Sumar Entradas</Link>
         </Menu.Item>
       </Menu>
@@ -35,7 +37,6 @@ function App() {
         <Route path="/" render={()=> <Home selection={selected} />} />
       </Switch>
 
-      {/* <Home selection={selected} /> */}
     </div>
   );
 }

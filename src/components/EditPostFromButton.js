@@ -1,72 +1,71 @@
 import {useState} from "react";
 import BlogService from "../services/blog.service";
-import {Form, Input, Col, Button} from "antd";
+import {Form, Input, Col, Button, Alert} from "antd";
 
 function EditPostFromButton(props) {
-  const initialValue = {
-    title: "",
-    body: "",
-    userId: 0,
-  };
-  const [post, setPost] = useState(props.post || initialValue);
+  const [form] = Form.useForm();
+  const [showSaved, setShowSaved] = useState(false);
 
-  const savePost = e => {
-    e.preventDefault();
-    const data = {title: post.title, body: post.body, userId: post.userId};
-    BlogService.updateById(post.id, data)
-      .then(res => console.log(res))
+  const onFinish = values => {
+    console.log(values);
+    const data = {name: values.title, job: values.body, userId: values.userId};
+    BlogService.updateById(props.post.id, data)
+      .then(res => {
+        console.log(res);
+        setShowSaved(true);
+        setTimeout(() => setShowSaved(false), 3000);
+      })
       .catch(error => console.log(error));
   };
 
-  const handleInput = e => {
-    const {name, value} = e.target;
-    setPost({...post, [name]: value});
-  };
-
   const formLayout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+    labelCol: {span: 8},
+    wrapperCol: {span: 16},
   };
 
   return (
     <div>
       <Col span={12} offset={6}>
         <h1 className="centeredTitle">Editar post</h1>
-        <p>Desde aquí podés editar el post con id {post.id} </p>
-        <Form {...formLayout} onSubmit={savePost} size="lg">
-          <Form.Item label="Título del post">
-            <Input
-              type="text"
-              name="title"
-              onChange={handleInput}
-              value={post.title}
-            />
-          </Form.Item>
-                 
-          <Form.Item label="Id del usuario">
-            <Input
-              type="number"
-              name="userId"
-              onChange={handleInput}
-              value={post.userId}
-            />
+        <p>Desde aquí podés editar el post con id {"************"} </p>
+        <Form
+          {...formLayout}
+          form={form}
+          name="control-hooks"
+          initialValues={{ title: props.post.email }}
+          onFinish={onFinish}>
+          <Form.Item label="Título del post" name="title">
+            <Input type="text" />
           </Form.Item>
 
-          <Form.Item label="Cuerpo del post">
+          <Form.Item label="Id del usuario" name="userId">
+            <Input type="number" />
+          </Form.Item>
+
+          <Form.Item label="Cuerpo del post" name="body">
             <Input.TextArea
               showCount
               maxLength={500}
-              autoSize={{ minRows: 2, maxRows: 10 }}
-              name="body"
-              onChange={handleInput}
-              value={post.body}
+              autoSize={{minRows: 2, maxRows: 10}}
             />
           </Form.Item>
 
-          <Button className="rightAlignedButtons" onClick={props.handleCancel} danger>Cancelar Edicion</Button>{"  "}
-          <Button className="rightAlignedButtons" type="primary" htmlType="submit">Enviar</Button>
-
+          <Button
+            className="rightAlignedButtons"
+            onClick={props.handleCancel}
+            danger>
+            Cancelar Edicion
+          </Button>
+          {"  "}
+          <Button
+            className="rightAlignedButtons"
+            type="primary"
+            htmlType="submit">
+            Enviar
+          </Button>
         </Form>
+        {showSaved && <Alert message="Post editado con éxito" type="info" />}
+
       </Col>
     </div>
   );
