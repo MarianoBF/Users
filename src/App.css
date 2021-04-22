@@ -1,23 +1,8 @@
 @import '~antd/dist/antd.css';
 
 .postContainer {
-    border: 1px solid black;
-    max-width: 80vw;
-}
-
-.postTitle {
-    max-width: 80vw;
-}
-
-.postUser {
-    font-size: 12px;
-    font-weight: 500;
-    text-align: right;
-}
-
-.postContents {
-    font-size: 12px;
-    font-weight: 300;
+    border: 2px solid #0F0F0F;
+    margin: 1vh auto;
 }
 
 .rightAlignedButtons {

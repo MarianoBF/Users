@@ -1,6 +1,6 @@
 import {useState} from "react";
 import BlogService from "../services/blog.service";
-import {Form, Input, Col, Button} from "antd";
+import {Form, Input, Col, Button, Alert} from "antd";
 
 function AddPost(props) {
   const initialValue = {
@@ -9,13 +9,18 @@ function AddPost(props) {
     usetId: 0,
   };
 
+  const [showSaved, setShowSaved] = useState(false);
   const [post, setPost] = useState(initialValue);
 
   const savePost = e => {
     e.preventDefault();
     const data = {title: post.title, body: post.body, userId: post.userId};
     BlogService.createPost(data)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res.data);
+        setShowSaved(true);
+        setTimeout(() => setShowSaved(false), 3000);
+      })
       .catch(error => console.log(error));
   };
 
@@ -62,7 +67,10 @@ function AddPost(props) {
             />
           </Form.Item>
 
-          <Button className="rightAlignedButtons" danger onClick={props.handleCancel}>
+          <Button
+            className="rightAlignedButtons"
+            danger
+            onClick={props.handleCancel}>
             Cancelar Edicion
           </Button>
           {"  "}
@@ -73,6 +81,7 @@ function AddPost(props) {
             Enviar
           </Button>
         </Form>
+        {showSaved && <Alert message="Post enviado con éxito" type="info" />}
       </Col>
     </div>
   );

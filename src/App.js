@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import {useState} from "react";
 
 function App() {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("home");
 
   const menuSelect = selection => {
     setSelected(selection);
