@@ -1,6 +1,6 @@
-A CRUD for https://jsonplaceholder.typicode.com/posts 
+A CRUD for https://reqres.in/
 
-Una herramienta de ABM para https://jsonplaceholder.typicode.com/posts
+Una herramienta de ABM para https://reqres.in/
 
 ## Instalation / Instalación
 

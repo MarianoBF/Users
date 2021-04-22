@@ -1,7 +1,7 @@
 import http from "../http-common";
 
-class BudgetDataService {
-  getAllPosts() {
+class UsersDataService {
+  getAllUsers() {
     return http.get("/users");
   }
 
@@ -9,7 +9,7 @@ class BudgetDataService {
     return http.get(`/users/${id}`);
   }
 
-  createPost(data) {
+  createUser(data) {
     return http.post("/users", data);
   }
 
@@ -22,4 +22,4 @@ class BudgetDataService {
   }
 }
 
-export default new BudgetDataService();
+export default new UsersDataService();

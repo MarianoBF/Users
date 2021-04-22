@@ -5,27 +5,27 @@ function Details(props) {
   return (
     <div>
       <Modal
-        title="Detalles del post:"
+        title="Detalles del Usuario:"
         centered
         closable={false}
         visible={props.visible}
         cancelButtonProps={{style: {display: "none"}}}
         okText={"Cerrar"}
         onOk={props.handleClose}>
-        <h2 className="postTitle">Title: {props.post.title}</h2>
-        <p className="postUser">User id: {props.post.userId} </p>{" "}
-        <p className="postUser">Texto: {props.post.body} </p>{" "}
+        <p>Nombre: {props.user.first_name}</p>
+        <p>Apellido: {props.user.last_name} </p>{" "}
+        <p>Email: {props.user.email} </p>{" "}
         <Space>
-          <Button onClick={() => props.handleEdit(props.post)}>
-            Editar Post
+          <Button onClick={() => props.handleEdit(props.user)}>
+            Editar Usuario
           </Button>
-          <Button danger onClick={() => props.handleDelete(props.post.id)}>
-            Borrar Post
+          <Button danger onClick={() => props.handleDelete(props.user.id)}>
+            Borrar Usuario
           </Button>
         </Space>
         <Divider />
         {props.success && (
-          <Alert message="Post borrado con éxito" type="info" />
+          <Alert message="Usuario borrado con éxito" type="info" />
         )}
       </Modal>
     </div>
