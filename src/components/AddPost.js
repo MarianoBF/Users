@@ -2,19 +2,14 @@ import {useState} from "react";
 import BlogService from "../services/blog.service";
 import {Form, Input, Col, Button, Alert} from "antd";
 
-function AddPost(props) {
-  const initialValue = {
-    title: "",
-    body: "",
-    usetId: 0,
-  };
+function AddPost() {
+  const [form] = Form.useForm();
 
   const [showSaved, setShowSaved] = useState(false);
-  const [post, setPost] = useState(initialValue);
 
-  const savePost = e => {
-    e.preventDefault();
-    const data = {title: post.title, body: post.body, userId: post.userId};
+  const onFinish = (values) => {
+    console.log(values)
+    const data = {title: values.title, body: values.body, userId: values.userId};
     BlogService.createPost(data)
       .then(res => {
         console.log(res.data);
@@ -22,11 +17,6 @@ function AddPost(props) {
         setTimeout(() => setShowSaved(false), 3000);
       })
       .catch(error => console.log(error));
-  };
-
-  const handleInput = e => {
-    const {name, value} = e.target;
-    setPost({...post, [name]: value});
   };
 
   const formLayout = {
@@ -39,32 +29,24 @@ function AddPost(props) {
       <Col span={12} offset={6}>
         <h1>Agregar post</h1>
         <p>Desde aquí podés agregar un nuevo post </p>
-        <Form {...formLayout} onSubmit={savePost}>
-          <Form.Item label="Título del post">
+        <Form
+          {...formLayout}
+          form={form}
+          name="control-hooks"
+          onFinish={onFinish}>
+          <Form.Item label="Título del post" name="title">
             <Input
               type="text"
-              name="title"
-              onChange={handleInput}
-              value={post.title}
+              rules={[{required: true, message: "Ingrese un título"}]}
             />
           </Form.Item>
 
-          <Form.Item label="Cuerpo del post">
-            <Input
-              type="textarea"
-              name="body"
-              onChange={handleInput}
-              value={post.body}
-            />
+          <Form.Item label="Cuerpo del post" name="body">
+            <Input type="textarea" />
           </Form.Item>
 
-          <Form.Item label="Id del usuario">
-            <Input
-              type="number"
-              name="userId"
-              onChange={handleInput}
-              value={post.userId}
-            />
+          <Form.Item label="Id del usuario" name="userId">
+            <Input type="number" />
           </Form.Item>
 
           <Button
