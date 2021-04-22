@@ -2,7 +2,6 @@ import {useState, useEffect} from "react";
 import BlogService from "../services/blog.service";
 import AddPost from "./AddPost";
 import EditPostFromButton from "./EditPostFromButton";
-import EditPostFromMenu from "./EditPostFromMenu";
 import Details from "./Details";
 import {Button, Col, Row, Alert} from "antd";
 
@@ -76,7 +75,7 @@ function Home(props) {
   ));
 
   return (
-    <main>
+    <div>
       {selection === "home" && !editMode && (
         <Col xs={{ span: 24}} lg={{ span: 12, offset: 6 }}>
           <h1>Listado de posts</h1>
@@ -96,16 +95,13 @@ function Home(props) {
           handleDelete={handleDelete}
         />
       )}
-      {!editMode && selection === "edit" && (
-        <EditPostFromMenu handleCancel={handleCancel} />
-      )}
       {editMode && (
         <EditPostFromButton handleCancel={handleCancel} post={postToEdit} />
       )}
       {!editMode && selection === "add" && (
         <AddPost handleCancel={handleCancel} />
       )}
-    </main>
+    </div>
   );
 }
 

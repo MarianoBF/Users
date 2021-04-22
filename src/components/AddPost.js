@@ -69,17 +69,12 @@ function AddPost(props) {
 
           <Button
             className="rightAlignedButtons"
-            danger
-            onClick={props.handleCancel}>
-            Cancelar Edicion
-          </Button>
-          {"  "}
-          <Button
-            className="rightAlignedButtons"
             type="primary"
             htmlType="submit">
             Enviar
           </Button>
+
+          {"  "}
         </Form>
         {showSaved && <Alert message="Post enviado con éxito" type="info" />}
       </Col>

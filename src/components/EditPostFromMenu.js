@@ -2,7 +2,7 @@ import {useState} from "react";
 import BlogService from "../services/blog.service";
 import {Form, Input, Col, Button} from "antd";
 
-function EditPostFromMenu(props) {
+function EditPostFromMenu() {
   const initialValue = {
     title: "",
     body: "",
@@ -100,9 +100,6 @@ function EditPostFromMenu(props) {
 
           <Button className="rightAlignedButtons" type="primary" htmlType="submit">
             Enviar
-          </Button>
-          <Button className="rightAlignedButtons" onClick={props.handleCancel} danger>
-            Cancelar Edicion
           </Button>
         </Form>
       </Col>
