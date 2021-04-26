@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import EditUserFromButton from "./EditUserFromButton";
 import Details from "./Details";
@@ -6,11 +6,22 @@ import {Button, Col, Row, Alert} from "antd";
 
 function Home(props) {
   const [userList, setUserList] = useState([]);
+  const isMounted = useRef(true);
+  const timer = useRef(true);
 
   useEffect(() => {
     UsersDataService.getAllUsers()
-      .then(res => setUserList(res.data.data))
+      .then(res => {
+        if (isMounted.current) {
+          setUserList(res.data.data);
+        }
+      })
       .catch(error => console.log(error));
+    return () => {
+      isMounted.current = false;
+      setShowDeleted(false);
+      clearTimeout(timer.current);
+    };
   }, [props]);
 
   const [editMode, setEditMode] = useState(false);
@@ -42,8 +53,10 @@ function Home(props) {
     UsersDataService.deleteById(id)
       .then(res => {
         console.log(res);
-        setShowDeleted(true);
-        setTimeout(() => setShowDeleted(false), 3000);
+        if (isMounted.current) {
+          setShowDeleted(true);
+          timer.current = setTimeout(() => setShowDeleted(false), 3000);
+        }
       })
       .catch(error => console.log(error));
   };
@@ -56,13 +69,13 @@ function Home(props) {
     <div className="userContainer" key={item.id}>
       <h2>Nombre: {item.first_name}</h2>
       <Row justify="space-around">
-          <Button type="primary" onClick={() => handleDetails(item)}>
-            Ver detalle de Usuario
-          </Button>{" "}
-          <Button onClick={() => handleEdit(item)}>Editar Usuario</Button>{" "}
-          <Button danger onClick={() => handleDelete(item.id)}>
-            Borrar Usuario
-          </Button>
+        <Button type="primary" onClick={() => handleDetails(item)}>
+          Ver detalle de Usuario
+        </Button>{" "}
+        <Button onClick={() => handleEdit(item)}>Editar Usuario</Button>{" "}
+        <Button danger onClick={() => handleDelete(item.id)}>
+          Borrar Usuario
+        </Button>
       </Row>
     </div>
   ));
