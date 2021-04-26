@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import {Form, Input, Col, Button, Alert} from "antd";
 
@@ -6,6 +6,17 @@ function AddUser() {
   const [form] = Form.useForm();
 
   const [showSaved, setShowSaved] = useState(false);
+
+  const isMounted = useRef(true);
+  const timer = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+      setShowSaved(false);
+      clearTimeout(timer.current);
+    };
+  }, []);
 
   const onFinish = values => {
     const data = {
@@ -16,8 +27,10 @@ function AddUser() {
     UsersDataService.createUser(data)
       .then(res => {
         console.log(res.data);
-        setShowSaved(true);
-        setTimeout(() => setShowSaved(false), 3000);
+        if (isMounted.current) {
+          setShowSaved(true);
+          timer.current = setTimeout(() => setShowSaved(false), 3000);
+        }
       })
       .catch(error => console.log(error));
   };
@@ -46,10 +59,7 @@ function AddUser() {
                 message: "Campo requerido",
               },
             ]}>
-            <Input
-              type="text"
-              rules={[{required: true, message: "Ingrese un título"}]}
-            />
+            <Input type="text" />
           </Form.Item>
 
           <Form.Item
@@ -61,11 +71,7 @@ function AddUser() {
                 message: "Campo requerido",
               },
             ]}>
-            <Input.TextArea
-              showCount
-              maxLength={500}
-              autoSize={{minRows: 2, maxRows: 10}}
-            />
+            <Input type="text" />
           </Form.Item>
 
           <Form.Item
