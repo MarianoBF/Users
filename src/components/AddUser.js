@@ -1,22 +1,21 @@
 import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import {Form, Input, Col, Button, Alert} from "antd";
+import useMounted from "../hooks/useMounted";
 
 function AddUser() {
   const [form] = Form.useForm();
-
   const [showSaved, setShowSaved] = useState(false);
-
-  const isMounted = useRef(true);
   const timer = useRef(true);
 
   useEffect(() => {
     return () => {
-      isMounted.current = false;
       setShowSaved(false);
       clearTimeout(timer.current);
     };
   }, []);
+
+  const isMounted = useMounted();
 
   const onFinish = values => {
     const data = {

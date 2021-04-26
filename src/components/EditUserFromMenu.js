@@ -1,12 +1,12 @@
 import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import {Form, Input, Col, Button, Alert} from "antd";
+import useMounted from "../hooks/useMounted";
 
 function EditUserFromMenu() {
   const [form] = Form.useForm();
   const [showSaved, setShowSaved] = useState(false);
-
-  const isMounted = useRef(true);
+  const isMounted = useMounted();
   const timer = useRef(true);
 
   useEffect(() => {
