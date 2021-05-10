@@ -13,7 +13,11 @@ function Home(props) {
     UsersDataService.getAllUsers()
       .then(res => {
         if (isMounted.current) {
-          setUserList(res.data.data);
+          let local = localStorage.getItem('users')
+          local = Array.from(JSON.parse(local))
+          console.log(local)
+          const auxData = [...local, ...res.data.data,]
+          setUserList(auxData);
         }
       })
       .catch(error => console.log(error));
