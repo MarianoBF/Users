@@ -1,18 +1,31 @@
-import {useState} from "react";
+import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import {Form, Input, Col, Button, Alert} from "antd";
+import useMounted from "../hooks/useMounted";
 
 function EditUserFromButton(props) {
   const [form] = Form.useForm();
   const [showSaved, setShowSaved] = useState(false);
+  const isMounted = useMounted();
+  const timer = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+      setShowSaved(false);
+      clearTimeout(timer.current);
+    };
+  }, []);
 
   const onFinish = values => {
     const data = {name: values.title, job: values.body, userId: values.userId};
     UsersDataService.updateById(props.user.id, data)
       .then(res => {
         console.log(res);
-        setShowSaved(true);
-        setTimeout(() => setShowSaved(false), 3000);
+        if (isMounted.current) {
+          setShowSaved(true);
+          timer.current = setTimeout(() => setShowSaved(false), 3000);
+        }
       })
       .catch(error => console.log(error));
   };
