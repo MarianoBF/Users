@@ -15,7 +15,7 @@ function EditUserFromButton(props) {
       setShowSaved(false);
       clearTimeout(timer.current);
     };
-  }, []);
+  }, [isMounted]);
 
   const onFinish = values => {
     const data = {name: values.title, job: values.body, userId: values.userId};

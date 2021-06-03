@@ -15,7 +15,7 @@ function EditUserFromMenu() {
       setShowSaved(false);
       clearTimeout(timer.current);
     };
-  }, []);
+  }, [isMounted]);
 
   const onFinish = values => {
     const data = {name: values.email, job: values.body, userId: values.userId};
