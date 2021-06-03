@@ -2,8 +2,11 @@ import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import {Form, Input, Col, Button, Alert} from "antd";
 import useMounted from "../hooks/useMounted";
+import {useHistory} from "react-router-dom";
 
-function EditUserFromMenu() {
+function EditUserFromMenu(props) {
+  const history = useHistory();
+
   const [form] = Form.useForm();
   const [showSaved, setShowSaved] = useState(false);
   const isMounted = useMounted();
@@ -24,7 +27,10 @@ function EditUserFromMenu() {
         console.log(res);
         if (isMounted.current) {
           setShowSaved(true);
-          timer.current = setTimeout(() => setShowSaved(false), 3000);
+          timer.current = setTimeout(() => {
+            setShowSaved(false);
+            history.push("/");
+          }, 3000);
         }
       })
       .catch(error => console.log(error));
@@ -51,6 +57,8 @@ function EditUserFromMenu() {
       });
   };
 
+
+
   const handleCancel = () => {
     window.location.reload();
   };
@@ -60,9 +68,9 @@ function EditUserFromMenu() {
       <Col span={12} offset={6}>
         <h1 className="centeredTitle">Editar Usuario</h1>
         <p>
-          En esta opción podés elegir el usuario a editar. Si en todo caso querés editar
-          directamente desde un usuario, hacé click sobre la opción "editar" al
-          pie del mismo.
+          En esta opción podés elegir el usuario a editar. Si en todo caso
+          querés editar directamente desde un usuario, hacé click sobre la
+          opción "editar" al pie del mismo.
         </p>
 
         <Form

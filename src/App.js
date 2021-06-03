@@ -31,6 +31,7 @@ function App() {
       </Menu>
 
       <Switch>
+        <Route exact path="/edit/:user_id" component={EditUserFromMenu} />
         <Route exact path="/edit" component={EditUserFromMenu} />
         <Route exact path="/add" component={AddUser} />
         <Route path="/" render={() => <Home selection={selected} />} />

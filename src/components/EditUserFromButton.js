@@ -2,8 +2,11 @@ import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import {Form, Input, Col, Button, Alert} from "antd";
 import useMounted from "../hooks/useMounted";
+import { useHistory } from "react-router-dom";
+
 
 function EditUserFromButton(props) {
+  const history = useHistory();
   const [form] = Form.useForm();
   const [showSaved, setShowSaved] = useState(false);
   const isMounted = useMounted();
@@ -24,7 +27,10 @@ function EditUserFromButton(props) {
         console.log(res);
         if (isMounted.current) {
           setShowSaved(true);
-          timer.current = setTimeout(() => setShowSaved(false), 3000);
+          timer.current = setTimeout(() => {
+            setShowSaved(false);
+            history.push('/');
+          }, 3000);
         }
       })
       .catch(error => console.log(error));

@@ -2,8 +2,11 @@ import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import {Form, Input, Col, Button, Alert} from "antd";
 import useMounted from "../hooks/useMounted";
+import {useHistory} from "react-router-dom";
 
 function AddUser() {
+  const history = useHistory();
+
   const [form] = Form.useForm();
   const [showSaved, setShowSaved] = useState(false);
   const timer = useRef(true);
@@ -26,11 +29,14 @@ function AddUser() {
     UsersDataService.createUser(data)
       .then(res => {
         console.log(res.data);
-        const newUser = [res.data]
-        localStorage.setItem('users', JSON.stringify(newUser))
+        const newUser = [res.data];
+        localStorage.setItem("users", JSON.stringify(newUser));
         if (isMounted.current) {
           setShowSaved(true);
-          timer.current = setTimeout(() => setShowSaved(false), 3000);
+          timer.current = setTimeout(() => {
+            setShowSaved(false);
+            history.push("/");
+          }, 3000);
         }
       })
       .catch(error => console.log(error));
