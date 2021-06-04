@@ -1,5 +1,6 @@
 import {Modal, Button} from "antd";
 import {Space, Alert, Divider} from "antd";
+import {Link} from "react-router-dom";
 
 function Details(props) {
   return (
@@ -16,9 +17,9 @@ function Details(props) {
         <p>Apellido: {props.user.last_name} </p>{" "}
         <p>Email: {props.user.email} </p>{" "}
         <Space>
-          <Button onClick={() => props.handleEdit(props.user)}>
-            Editar Usuario
-          </Button>
+          <Link to={"/edit/" + props.user.id}>
+            <Button>Editar Usuario</Button>
+          </Link>
           <Button danger onClick={() => props.handleDelete(props.user.id)}>
             Borrar Usuario
           </Button>

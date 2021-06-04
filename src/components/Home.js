@@ -98,7 +98,6 @@ function Home(props) {
           user={userToShow}
           visible={visible}
           handleClose={handleClose}
-          handleEdit={handleEdit}
           handleDelete={handleDelete}
         />
       )}
