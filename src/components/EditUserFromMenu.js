@@ -2,9 +2,9 @@ import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import {Form, Input, Col, Button, Alert} from "antd";
 import useMounted from "../hooks/useMounted";
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 
-function EditUserFromMenu(props) {
+function EditUserFromMenu() {
   const history = useHistory();
 
   const [form] = Form.useForm();
@@ -44,9 +44,23 @@ function EditUserFromMenu(props) {
   const [selectedUser, setSelectedUser] = useState(0);
   const [disabled, setDisabled] = useState(true);
 
+  const {user_id} = useParams();
+
+  if (user_id) {
+    getUserToEdit(user_id);
+  }
+
   const handleSelect = e => {
     setSelectedUser(e.target.value);
-    UsersDataService.getById(e.target.value)
+    getUserToEdit();
+  };
+
+  const handleCancel = () => {
+    window.location.reload();
+  };
+
+  function getUserToEdit(user_id) {
+    UsersDataService.getById(user_id || selectedUser)
       .then(res => {
         form.setFieldsValue(res.data.data);
         setDisabled(false);
@@ -55,13 +69,7 @@ function EditUserFromMenu(props) {
         console.log(error);
         setDisabled(true);
       });
-  };
-
-
-
-  const handleCancel = () => {
-    window.location.reload();
-  };
+  }
 
   return (
     <main>
@@ -86,7 +94,7 @@ function EditUserFromMenu(props) {
               max="12"
               onChange={handleSelect}
               disabled={!disabled}
-              value={selectedUser}
+              value={user_id || selectedUser}
             />
           </Form.Item>
 

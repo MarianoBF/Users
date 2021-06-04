@@ -1,8 +1,8 @@
 import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
-import EditUserFromButton from "./EditUserFromButton";
 import Details from "./Details";
 import {Button, Col, Row, Alert} from "antd";
+import {Link} from "react-router-dom"
 
 function Home(props) {
   const [userList, setUserList] = useState([]);
@@ -32,11 +32,9 @@ function Home(props) {
   }, [props]);
 
   const [editMode, setEditMode] = useState(false);
-  const [userToEdit, setUserToEdit] = useState();
   const handleEdit = user => {
     setEditMode(true);
     setDetailsMode(false);
-    setUserToEdit(user);
   };
 
   const [detailsMode, setDetailsMode] = useState(false);
@@ -68,10 +66,6 @@ function Home(props) {
       .catch(error => console.log(error));
   };
 
-  const handleCancel = () => {
-    setEditMode(false);
-  };
-
   const userListDisplay = userList.slice(0, 5).map(item => (
     <div className="userContainer" key={item.id}>
       <h2>Nombre: {item.first_name}</h2>
@@ -79,7 +73,7 @@ function Home(props) {
         <Button type="primary" onClick={() => handleDetails(item)}>
           Ver detalle de Usuario
         </Button>{" "}
-        <Button onClick={() => handleEdit(item)}>Editar Usuario</Button>{" "}
+        <Link to={"/edit/"+item.id}><Button onClick={() => handleEdit(item)}>Editar Usuario</Button>{" "}</Link>
         <Button danger onClick={() => handleDelete(item.id)}>
           Borrar Usuario
         </Button>
@@ -108,9 +102,9 @@ function Home(props) {
           handleDelete={handleDelete}
         />
       )}
-      {editMode && (
+      {/* {editMode && (
         <EditUserFromButton handleCancel={handleCancel} user={userToEdit} />
-      )}
+      )} */}
     </div>
   );
 }
