@@ -3,6 +3,7 @@ import UsersDataService from "../services/users.service";
 import {Form, Input, Col, Button, Alert} from "antd";
 import useMounted from "../hooks/useMounted";
 import {useHistory, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 function EditUserFromMenu() {
   const history = useHistory();
@@ -53,10 +54,6 @@ function EditUserFromMenu() {
   const handleSelect = e => {
     setSelectedUser(e.target.value);
     getUserToEdit();
-  };
-
-  const handleCancel = () => {
-    window.location.reload();
   };
 
   function getUserToEdit(user_id) {
@@ -142,11 +139,13 @@ function EditUserFromMenu() {
           </Button>
 
           {"  "}
+        </Form>
 
-          <Button className="rightAlignedButtons" onClick={handleCancel} danger>
+        <Link to="/">
+          <Button className="rightAlignedButtons" danger>
             Cancelar Edicion
           </Button>
-        </Form>
+        </Link>
         {showSaved && <Alert message="Usuario editado con éxito" type="info" />}
       </Col>
     </main>
