@@ -1,14 +1,14 @@
 import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
-import {Form, Input, Col, Button, Alert} from "antd";
+import {Col, Button, Alert} from "antd";
 import useMounted from "../hooks/useMounted";
 import {useHistory, useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
+import UserForm from "./UserForm/UserForm";
 
 function EditUserFromMenu() {
   const history = useHistory();
 
-  const [form] = Form.useForm();
   const [showSaved, setShowSaved] = useState(false);
   const isMounted = useMounted();
   const timer = useRef(true);
@@ -37,11 +37,6 @@ function EditUserFromMenu() {
       .catch(error => console.log(error));
   };
 
-  const formLayout = {
-    labelCol: {span: 8},
-    wrapperCol: {span: 16},
-  };
-
   const [selectedUser, setSelectedUser] = useState(0);
   const [disabled, setDisabled] = useState(true);
 
@@ -56,10 +51,12 @@ function EditUserFromMenu() {
     getUserToEdit();
   };
 
+  const [userData, setUserData] = useState("");
+
   function getUserToEdit(user_id) {
     UsersDataService.getById(user_id || selectedUser)
       .then(res => {
-        form.setFieldsValue(res.data.data);
+        setUserData(res.data.data);
         setDisabled(false);
       })
       .catch(error => {
@@ -77,8 +74,17 @@ function EditUserFromMenu() {
           querés editar directamente desde un usuario, hacé click sobre la
           opción "editar" al pie del mismo.
         </p>
+        <UserForm
+          onFinish={onFinish}
+          editing={true}
+          user_id={user_id}
+          selectedUser={selectedUser}
+          handleSelect={handleSelect}
+          disabled={disabled}
+          userData={userData}
+        />
 
-        <Form
+        {/* <Form
           {...formLayout}
           form={form}
           name="control-hooks"
@@ -139,7 +145,7 @@ function EditUserFromMenu() {
           </Button>
 
           {"  "}
-        </Form>
+        </Form> */}
 
         <Link to="/">
           <Button className="rightAlignedButtons" danger>
