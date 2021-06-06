@@ -1,8 +1,8 @@
 import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
 import Details from "./Details";
-import {Button, Col, Row, Alert} from "antd";
-import {Link} from "react-router-dom"
+import {Button, Col, Row, Alert, Divider, Typography} from "antd";
+import {Link} from "react-router-dom";
 
 function Home(props) {
   const [userList, setUserList] = useState([]);
@@ -16,11 +16,11 @@ function Home(props) {
           let local = localStorage.getItem("users");
           if (local) {
             local = Array.from(JSON.parse(local));
+            setUserList(local);
           } else {
             local = [];
+            setUserList(res.data.data);
           }
-          const auxData = [...local, ...res.data.data];
-          setUserList(auxData);
         }
       })
       .catch(error => console.log(error));
@@ -66,6 +66,17 @@ function Home(props) {
       .catch(error => console.log(error));
   };
 
+  const restoreData = () => {
+    UsersDataService.getAllUsers()
+      .then(res => {
+        if (isMounted.current) {
+          localStorage.setItem("users", JSON.stringify(res.data.data));
+          setUserList(res.data.data);
+        }
+      })
+      .catch(error => console.log(error));
+  };
+
   const userListDisplay = userList.slice(0, 5).map(item => (
     <div className="userContainer" key={item.id}>
       <h2>Nombre: {item.first_name}</h2>
@@ -73,7 +84,9 @@ function Home(props) {
         <Button type="primary" onClick={() => handleDetails(item)}>
           Ver detalle de Usuario
         </Button>{" "}
-        <Link to={"/edit/"+item.id}><Button onClick={() => handleEdit(item)}>Editar Usuario</Button>{" "}</Link>
+        <Link to={"/edit/" + item.id}>
+          <Button onClick={() => handleEdit(item)}>Editar Usuario</Button>{" "}
+        </Link>
         <Button danger onClick={() => handleDelete(item.id)}>
           Borrar Usuario
         </Button>
@@ -101,9 +114,21 @@ function Home(props) {
           handleDelete={handleDelete}
         />
       )}
-      {/* {editMode && (
-        <EditUserFromButton handleCancel={handleCancel} user={userToEdit} />
-      )} */}
+
+      <Divider dashed />
+      <Col xs={{span: 24}} lg={{span: 12, offset: 6}}>
+        <Row justify="space-around">
+          <Typography type="secondary" style={{textAlign: "justify"}}>
+            Desde el menú y los botones se puede modificar los datos, que
+            quedarán guardados en una copia local (la API no persiste las
+            modificaciones). En caso de querer restaurarlos desde la API
+            clickear el siguiente botón.
+          </Typography>
+          <Button onClick={restoreData} type="secondary">
+            Restaurar datos desde la API
+          </Button>
+        </Row>
+      </Col>
     </div>
   );
 }

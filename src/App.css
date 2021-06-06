@@ -3,6 +3,7 @@
 .userContainer {
     border: 2px solid #0F0F0F;
     margin: 1vh auto;
+    padding: 2px;
 }
 
 .rightAlignedButtons {
