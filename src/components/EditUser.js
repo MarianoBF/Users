@@ -25,7 +25,12 @@ function EditUser() {
     const data = {name: values.email, job: values.body, userId: values.userId};
     UsersDataService.updateById(values.userId, data)
       .then(res => {
-        console.log(res);
+        console.log(res.data);
+        const newUser = res.data;
+        const users = JSON.parse(localStorage.getItem("users"))
+        const position = users.findIndex(item=>item.id===values.userId)
+        users[position] = newUser
+        localStorage.setItem("users", JSON.stringify(users));
         if (isMounted.current) {
           setShowSaved(true);
           timer.current = setTimeout(() => {

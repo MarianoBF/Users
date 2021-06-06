@@ -17,8 +17,7 @@ function Home(props) {
           if (local) {
             local = Array.from(JSON.parse(local));
             setUserList(local);
-          } else {
-            local = [];
+          } else if (!local) {
             setUserList(res.data.data);
           }
         }
@@ -67,18 +66,12 @@ function Home(props) {
   };
 
   const restoreData = () => {
-    UsersDataService.getAllUsers()
-      .then(res => {
-        if (isMounted.current) {
-          localStorage.setItem("users", JSON.stringify(res.data.data));
-          setUserList(res.data.data);
-        }
-      })
-      .catch(error => console.log(error));
+  localStorage.removeItem("users");
+  window.location.reload();
   };
 
   const userListDisplay = userList.slice(0, 5).map(item => (
-    <div className="userContainer" key={item.id}>
+    <div className="userContainer" key={item.id+item.first_name}>
       <h2>Nombre: {item.first_name}</h2>
       <Row justify="space-around">
         <Button type="primary" onClick={() => handleDetails(item)}>
@@ -124,6 +117,7 @@ function Home(props) {
             modificaciones). En caso de querer restaurarlos desde la API
             clickear el siguiente botón.
           </Typography>
+          <Divider dashed />
           <Button onClick={restoreData} type="secondary">
             Restaurar datos desde la API
           </Button>

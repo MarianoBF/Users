@@ -1,9 +1,8 @@
 import {Form, Input, Button} from "antd";
 import {useState} from "react";
-import UsersDataService from "../../services/users.service";
 
 export default function UserForm({onFinish, editing, user_id}) {
-  console.log("render")
+  console.log("render");
   const [form] = Form.useForm();
 
   const formLayout = {
@@ -24,17 +23,17 @@ export default function UserForm({onFinish, editing, user_id}) {
   };
 
   function getUserToEdit(user_id) {
-    UsersDataService.getById(user_id || selectedUser)
-      .then(res => {
-        form.setFieldsValue(res.data.data);
-        setDisabled(false);
-      })
-      .catch(error => {
-        console.log(error);
-        setDisabled(true);
-      });
+    const users = JSON.parse(localStorage.getItem("users"));
+    const position = users.findIndex(item => item.id === user_id);
+    const user = users[position];
+    const auxPromise = new Promise((resolve, reject) => {
+      resolve(user);
+    });
+    auxPromise.then(res => {
+      form.setFieldsValue(res);
+      setDisabled(false);
+    });
   }
-
 
   return (
     <Form {...formLayout} form={form} name="control-hooks" onFinish={onFinish}>
@@ -43,8 +42,6 @@ export default function UserForm({onFinish, editing, user_id}) {
           <Input
             type="number"
             name="Id"
-            min="1"
-            max="12"
             onChange={handleSelect}
             disabled={!disabled}
             value={user_id || selectedUser}

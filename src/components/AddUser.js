@@ -28,9 +28,12 @@ function AddUser() {
     };
     UsersDataService.createUser(data)
       .then(res => {
-        console.log(res.data);
-        const newUser = [res.data];
-        localStorage.setItem("users", JSON.stringify(newUser));
+        console.log(res)
+        const newUser = res.data;
+        const users = JSON.parse(localStorage.getItem("users"))
+        users.pop()
+        users.unshift(newUser)
+        localStorage.setItem("users", JSON.stringify(users));
         if (isMounted.current) {
           setShowSaved(true);
           timer.current = setTimeout(() => {
