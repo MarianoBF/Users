@@ -24,10 +24,10 @@ function EditUser() {
   const onFinish = (values, id) => {
     UsersDataService.updateById(id, values)
       .then(res => {
-        console.log(res)
+        console.log(res);
         const users = JSON.parse(localStorage.getItem("users"));
         const position = users.findIndex(item => +item.id === +id);
-        users[position] = values;
+        users[position] = {id:  +id, ...values};
         localStorage.setItem("users", JSON.stringify(users));
         if (isMounted.current) {
           setShowSaved(true);
@@ -46,11 +46,13 @@ function EditUser() {
     <main>
       <Col span={12} offset={6}>
         <h1 className="centeredTitle">Editar Usuario</h1>
-        <p>
-          En esta opción podés elegir el usuario a editar. Si en todo caso
-          querés editar directamente desde un usuario, hacé click sobre la
-          opción "editar" al pie del mismo.
-        </p>
+        {user_id === undefined && (
+          <p>
+            En esta opción podés elegir el usuario a editar. Si en todo caso
+            querés editar directamente desde un usuario, hacé click sobre la
+            opción "editar" al pie del mismo.
+          </p>
+        )}
         <UserForm onFinish={onFinish} editing={true} user_id={user_id} />
 
         <Link to="/">
