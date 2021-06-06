@@ -1,7 +1,7 @@
 import "./App.css";
 import Home from "./components/Home";
 import AddUser from "./components/AddUser";
-import EditUserFromMenu from "./components/EditUserFromMenu";
+import EditUser from "./components/EditUser";
 import {useState} from "react";
 import {Menu} from "antd";
 import {HomeOutlined, EditOutlined, FileAddOutlined} from "@ant-design/icons";
@@ -31,8 +31,8 @@ function App() {
       </Menu>
 
       <Switch>
-        <Route exact path="/edit/:user_id" component={EditUserFromMenu} />
-        <Route exact path="/edit" component={EditUserFromMenu} />
+        <Route exact path="/edit/:user_id" component={EditUser} />
+        <Route exact path="/edit" component={EditUser} />
         <Route exact path="/add" component={AddUser} />
         <Route path="/" render={() => <Home selection={selected} />} />
       </Switch>

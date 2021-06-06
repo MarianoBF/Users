@@ -6,7 +6,7 @@ import {useHistory, useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
 import UserForm from "./UserForm/UserForm";
 
-function EditUserFromMenu() {
+function EditUser() {
   const history = useHistory();
 
   const [showSaved, setShowSaved] = useState(false);
@@ -23,7 +23,7 @@ function EditUserFromMenu() {
 
   const onFinish = values => {
     const data = {name: values.email, job: values.body, userId: values.userId};
-    UsersDataService.updateById(selectedUser, data)
+    UsersDataService.updateById(values.userId, data)
       .then(res => {
         console.log(res);
         if (isMounted.current) {
@@ -37,33 +37,7 @@ function EditUserFromMenu() {
       .catch(error => console.log(error));
   };
 
-  const [selectedUser, setSelectedUser] = useState(0);
-  const [disabled, setDisabled] = useState(true);
-
   const {user_id} = useParams();
-
-  if (user_id) {
-    getUserToEdit(user_id);
-  }
-
-  const handleSelect = e => {
-    setSelectedUser(e.target.value);
-    getUserToEdit();
-  };
-
-  const [userData, setUserData] = useState("");
-
-  function getUserToEdit(user_id) {
-    UsersDataService.getById(user_id || selectedUser)
-      .then(res => {
-        setUserData(res.data.data);
-        setDisabled(false);
-      })
-      .catch(error => {
-        console.log(error);
-        setDisabled(true);
-      });
-  }
 
   return (
     <main>
@@ -74,15 +48,7 @@ function EditUserFromMenu() {
           querés editar directamente desde un usuario, hacé click sobre la
           opción "editar" al pie del mismo.
         </p>
-        <UserForm
-          onFinish={onFinish}
-          editing={true}
-          user_id={user_id}
-          selectedUser={selectedUser}
-          handleSelect={handleSelect}
-          disabled={disabled}
-          userData={userData}
-        />
+        <UserForm onFinish={onFinish} editing={true} user_id={user_id} />
 
         {/* <Form
           {...formLayout}
@@ -158,4 +124,4 @@ function EditUserFromMenu() {
   );
 }
 
-export default EditUserFromMenu;
+export default EditUser;

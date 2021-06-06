@@ -1,14 +1,9 @@
 import {Form, Input, Button} from "antd";
+import {useState} from "react";
+import UsersDataService from "../../services/users.service";
 
-export default function UserForm({
-  onFinish,
-  editing,
-  handleSelect,
-  disabled,
-  user_id,
-  selectedUser,
-  userData
-}) {
+export default function UserForm({onFinish, editing, user_id}) {
+  console.log("render")
   const [form] = Form.useForm();
 
   const formLayout = {
@@ -16,9 +11,31 @@ export default function UserForm({
     wrapperCol: {span: 16},
   };
 
-  if (userData) {
-    form.setFieldsValue(userData);
+  const [selectedUser, setSelectedUser] = useState(0);
+  const [disabled, setDisabled] = useState(true);
+
+  if (user_id) {
+    getUserToEdit(user_id);
   }
+
+  const handleSelect = e => {
+    setSelectedUser(e.target.value);
+    getUserToEdit();
+  };
+
+  function getUserToEdit(user_id) {
+    UsersDataService.getById(user_id || selectedUser)
+      .then(res => {
+        form.setFieldsValue(res.data.data);
+        setDisabled(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setDisabled(true);
+      });
+  }
+
+
   return (
     <Form {...formLayout} form={form} name="control-hooks" onFinish={onFinish}>
       {editing && (
