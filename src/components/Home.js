@@ -18,7 +18,8 @@ function Home(props) {
             local = Array.from(JSON.parse(local));
             setUserList(local);
           } else if (!local) {
-            setUserList(res.data.data);
+            setUserList(res.data.data.slice(0,5));
+            localStorage.setItem("users", JSON.stringify(res.data.data.slice(0,5)))
           }
         }
       })

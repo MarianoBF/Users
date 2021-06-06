@@ -21,15 +21,13 @@ function EditUser() {
     };
   }, [isMounted]);
 
-  const onFinish = values => {
-    const data = {name: values.email, job: values.body, userId: values.userId};
-    UsersDataService.updateById(values.userId, data)
+  const onFinish = (values, id) => {
+    UsersDataService.updateById(id, values)
       .then(res => {
-        console.log(res.data);
-        const newUser = res.data;
-        const users = JSON.parse(localStorage.getItem("users"))
-        const position = users.findIndex(item=>item.id===values.userId)
-        users[position] = newUser
+        console.log(res)
+        const users = JSON.parse(localStorage.getItem("users"));
+        const position = users.findIndex(item => +item.id === +id);
+        users[position] = values;
         localStorage.setItem("users", JSON.stringify(users));
         if (isMounted.current) {
           setShowSaved(true);
@@ -54,69 +52,6 @@ function EditUser() {
           opción "editar" al pie del mismo.
         </p>
         <UserForm onFinish={onFinish} editing={true} user_id={user_id} />
-
-        {/* <Form
-          {...formLayout}
-          form={form}
-          name="control-hooks"
-          onFinish={onFinish}>
-          <Form.Item label="Id del usuario a editar">
-            <Input
-              type="number"
-              name="Id"
-              min="1"
-              max="12"
-              onChange={handleSelect}
-              disabled={!disabled}
-              value={user_id || selectedUser}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="Nombre"
-            name="first_name"
-            rules={[
-              {
-                required: true,
-                message: "Campo requerido",
-              },
-            ]}>
-            <Input type="text" disabled={disabled} />
-          </Form.Item>
-
-          <Form.Item
-            label="Apellido"
-            name="last_name"
-            rules={[
-              {
-                required: true,
-                message: "Campo requerido",
-              },
-            ]}>
-            <Input type="text" disabled={disabled} />
-          </Form.Item>
-
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Campo requerido",
-              },
-            ]}>
-            <Input type="email" disabled={disabled} />
-          </Form.Item>
-
-          <Button
-            className="rightAlignedButtons"
-            type="primary"
-            htmlType="submit">
-            Enviar
-          </Button>
-
-          {"  "}
-        </Form> */}
 
         <Link to="/">
           <Button className="rightAlignedButtons" danger>
