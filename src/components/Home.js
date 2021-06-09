@@ -58,9 +58,14 @@ function Home(props) {
     UsersDataService.deleteById(id)
       .then(res => {
         console.log(res);
+        const users = JSON.parse(localStorage.getItem("users"))
+        const position = users.findIndex(item => +item.id === +id);
+        users.splice(position,1);
+        localStorage.setItem("users", JSON.stringify(users));
         if (isMounted.current) {
           setShowDeleted(true);
           timer.current = setTimeout(() => setShowDeleted(false), 3000);
+          window.location.reload();
         }
       })
       .catch(error => console.log(error));
@@ -93,10 +98,10 @@ function Home(props) {
       {!editMode && (
         <Col xs={{span: 24}} lg={{span: 12, offset: 6}}>
           <h1>Listado de Usuarios</h1>
+          {userListDisplay}
           {showDeleted && !detailsMode && (
             <Alert message="Usuario borrado con éxito" type="info" />
           )}
-          {userListDisplay}
         </Col>
       )}
       {detailsMode && (

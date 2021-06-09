@@ -31,7 +31,6 @@ function AddUser() {
         console.log(res)
         const newUser = res.data;
         const users = JSON.parse(localStorage.getItem("users"))
-        users.pop()
         users.unshift(newUser)
         localStorage.setItem("users", JSON.stringify(users));
         if (isMounted.current) {
@@ -52,8 +51,8 @@ function AddUser() {
       <Col span={12} offset={6}>
         <h1>Agregar Usuario</h1>
         <p>Desde aquí podés agregar un nuevo usuario </p>
-        {showSaved && <Alert message="Usuario creado con éxito" type="info" />}
         <UserForm onFinish={onFinish} />
+        {showSaved && <Alert message="Usuario creado con éxito" type="info" />}
       </Col>
     </div>
   );
