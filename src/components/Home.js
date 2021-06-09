@@ -18,8 +18,11 @@ function Home(props) {
             local = Array.from(JSON.parse(local));
             setUserList(local);
           } else if (!local) {
-            setUserList(res.data.data.slice(0,5));
-            localStorage.setItem("users", JSON.stringify(res.data.data.slice(0,5)))
+            setUserList(res.data.data.slice(0, 5));
+            localStorage.setItem(
+              "users",
+              JSON.stringify(res.data.data.slice(0, 5))
+            );
           }
         }
       })
@@ -58,26 +61,28 @@ function Home(props) {
     UsersDataService.deleteById(id)
       .then(res => {
         console.log(res);
-        const users = JSON.parse(localStorage.getItem("users"))
+        const users = JSON.parse(localStorage.getItem("users"));
         const position = users.findIndex(item => +item.id === +id);
-        users.splice(position,1);
+        users.splice(position, 1);
         localStorage.setItem("users", JSON.stringify(users));
         if (isMounted.current) {
           setShowDeleted(true);
-          timer.current = setTimeout(() => setShowDeleted(false), 3000);
-          window.location.reload();
+          timer.current = setTimeout(() => {
+            setShowDeleted(false);
+            window.location.reload();
+          }, 3000);
         }
       })
       .catch(error => console.log(error));
   };
 
   const restoreData = () => {
-  localStorage.removeItem("users");
-  window.location.reload();
+    localStorage.removeItem("users");
+    window.location.reload();
   };
 
   const userListDisplay = userList.slice(0, 5).map(item => (
-    <div className="userContainer" key={item.id+item.first_name}>
+    <div className="userContainer" key={item.id + item.first_name}>
       <h2>Nombre: {item.first_name}</h2>
       <Row justify="space-around">
         <Button type="primary" onClick={() => handleDetails(item)}>
