@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from "react";
 import UsersDataService from "../services/users.service";
-import {Col, Button, Alert} from "antd";
+import {Col, Button, Alert, Select} from "antd";
 import useMounted from "../hooks/useMounted";
 import {useHistory, useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
@@ -42,18 +42,35 @@ function EditUser() {
 
   const {user_id} = useParams();
 
+  let existingIDs;
+
+  if (user_id === undefined) {
+    let local = localStorage.getItem("users");
+    if (local) {
+      local = Array.from(JSON.parse(local));
+      existingIDs = local.map(item => {
+        return <Select.Option key={item.id}>{item.id}</Select.Option>;
+      });
+    } else if (!local) {
+      console.log("error");
+    }
+  }
+
   return (
     <main>
       <Col span={12} offset={6}>
         <h1 className="centeredTitle">Editar Usuario</h1>
-        {user_id === undefined && (
-          <p>
-            En esta opción podés elegir el usuario a editar. Si en todo caso
-            querés editar directamente desde un usuario, hacé click sobre la
-            opción "editar" al pie del mismo.
-          </p>
-        )}
-        <UserForm onFinish={onFinish} editing={true} user_id={user_id} />
+        <p>
+          En esta opción podés elegir el usuario a editar. Si en todo caso
+          querés editar directamente desde un usuario, hacé click sobre la
+          opción "editar" al pie del mismo.
+        </p>
+        <UserForm
+          onFinish={onFinish}
+          editing={true}
+          user_id={user_id}
+          existingIDs={existingIDs}
+        />
 
         <Link to="/">
           <Button className="rightAlignedButtons" danger>

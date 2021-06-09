@@ -1,8 +1,7 @@
-import {Form, Input, Button} from "antd";
+import {Form, Input, Button, Select} from "antd";
 import {useState} from "react";
 
-export default function UserForm({onFinish, editing, user_id}) {
-  console.log("render");
+export default function UserForm({onFinish, editing, user_id, existingIDs}) {
   const [form] = Form.useForm();
 
   const formLayout = {
@@ -18,13 +17,15 @@ export default function UserForm({onFinish, editing, user_id}) {
   }
 
   const handleSelect = e => {
-    setSelectedUser(e.target.value);
-    getUserToEdit();
+    console.log(e)
+    setSelectedUser(()=>e);
+    getUserToEdit(e);
   };
 
-  function getUserToEdit(user_id) {
+  function getUserToEdit(id) {
+    console.log("edit", id);
     const users = JSON.parse(localStorage.getItem("users"));
-    const position = users.findIndex(item => +item.id === +user_id);
+    const position = users.findIndex(item => +item.id === +id);
     const user = users[position];
     const auxPromise = new Promise((resolve, reject) => {
       resolve(user);
@@ -39,13 +40,15 @@ export default function UserForm({onFinish, editing, user_id}) {
     <Form {...formLayout} form={form} name="control-hooks" onFinish={(values)=>onFinish(values, user_id || selectedUser)}>
       {editing && (
         <Form.Item label="Id del usuario a editar">
-          <Input
+          <Select
             type="number"
             name="Id"
             onChange={handleSelect}
             disabled={!disabled}
-            value={user_id || selectedUser}
-          />
+            // value={user_id || selectedUser}
+          >
+          {existingIDs}
+          </Select>
         </Form.Item>
       )}
       <Form.Item
