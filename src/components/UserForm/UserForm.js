@@ -17,13 +17,11 @@ export default function UserForm({onFinish, editing, user_id, existingIDs}) {
   }
 
   const handleSelect = e => {
-    console.log(e)
     setSelectedUser(()=>e);
     getUserToEdit(e);
   };
 
   function getUserToEdit(id) {
-    console.log("edit", id);
     const users = JSON.parse(localStorage.getItem("users"));
     const position = users.findIndex(item => +item.id === +id);
     const user = users[position];

@@ -126,7 +126,7 @@ function Home(props) {
             Desde el menú y los botones se puede modificar los datos, que
             quedarán guardados en una copia local (la API no persiste las
             modificaciones). En caso de querer restaurarlos desde la API
-            clickear el siguiente botón.
+            clickear el siguiente botón:
           </Typography>
           <Divider dashed />
           <Button onClick={restoreData} type="secondary">
