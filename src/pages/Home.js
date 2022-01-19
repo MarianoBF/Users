@@ -59,7 +59,7 @@ function Home(props) {
   const handleDelete = (id) => {
     UsersDataService.deleteById(id)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         const users = JSON.parse(localStorage.getItem("users"));
         const position = users.findIndex((item) => +item.id === +id);
         users.splice(position, 1);
@@ -69,7 +69,7 @@ function Home(props) {
           timer.current = setTimeout(() => {
             setShowDeleted(false);
             window.location.reload();
-          }, 3000);
+          }, 1500);
         }
       })
       .catch((error) => console.log(error));
@@ -97,7 +97,7 @@ function Home(props) {
     </div>
   ));
 
-  console.log(userListDisplay, userList);
+  // console.log(userListDisplay, userList);
 
   return (
     <div>
@@ -127,7 +127,7 @@ function Home(props) {
             Desde el menú y los botones se puede modificar los datos, que
             quedarán guardados en una copia local (la API no persiste las
             modificaciones). En caso de querer restaurarlos desde la API
-            clickear el siguiente botón:
+            clickeá el siguiente botón:
           </Typography>
           <Divider dashed />
           <Button onClick={restoreData} type="secondary">

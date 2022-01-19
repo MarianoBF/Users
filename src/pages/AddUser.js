@@ -28,7 +28,7 @@ function AddUser() {
     };
     UsersDataService.createUser(data)
       .then(res => {
-        console.log(res)
+        // console.log(res)
         const newUser = res.data;
         const users = JSON.parse(localStorage.getItem("users"))
         users.unshift(newUser)
