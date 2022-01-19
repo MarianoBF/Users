@@ -1,8 +1,8 @@
-import {useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import UsersDataService from "../services/users.service";
 import Details from "./Details";
-import {Button, Col, Row, Alert, Divider, Typography} from "antd";
-import {Link} from "react-router-dom";
+import { Button, Col, Row, Alert, Divider, Typography } from "antd";
+import { Link } from "react-router-dom";
 
 function Home(props) {
   const [userList, setUserList] = useState([]);
@@ -10,23 +10,22 @@ function Home(props) {
   const timer = useRef(true);
 
   useEffect(() => {
-    UsersDataService.getAllUsers()
-      .then(res => {
-        if (isMounted.current) {
-          let local = localStorage.getItem("users");
-          if (local) {
-            local = Array.from(JSON.parse(local));
-            setUserList(local);
-          } else if (!local) {
+    let local = localStorage.getItem("users");
+    if (local) {
+      local = Array.from(JSON.parse(local));
+      setUserList(local);
+    } else
+      UsersDataService.getAllUsers()
+        .then((res) => {
+          if (isMounted.current) {
             setUserList(res.data.data.slice(0, 5));
             localStorage.setItem(
               "users",
               JSON.stringify(res.data.data.slice(0, 5))
             );
           }
-        }
-      })
-      .catch(error => console.log(error));
+        })
+        .catch((error) => console.log(error));
     return () => {
       isMounted.current = false;
       setShowDeleted(false);
@@ -35,14 +34,14 @@ function Home(props) {
   }, [props]);
 
   const [editMode, setEditMode] = useState(false);
-  const handleEdit = user => {
+  const handleEdit = (user) => {
     setEditMode(true);
     setDetailsMode(false);
   };
 
   const [detailsMode, setDetailsMode] = useState(false);
   const [userToShow, setUserToShow] = useState();
-  const handleDetails = item => {
+  const handleDetails = (item) => {
     setDetailsMode(true);
     setUserToShow(item);
     setVisible(true);
@@ -57,12 +56,12 @@ function Home(props) {
 
   const [showDeleted, setShowDeleted] = useState(false);
 
-  const handleDelete = id => {
+  const handleDelete = (id) => {
     UsersDataService.deleteById(id)
-      .then(res => {
+      .then((res) => {
         console.log(res);
         const users = JSON.parse(localStorage.getItem("users"));
-        const position = users.findIndex(item => +item.id === +id);
+        const position = users.findIndex((item) => +item.id === +id);
         users.splice(position, 1);
         localStorage.setItem("users", JSON.stringify(users));
         if (isMounted.current) {
@@ -73,7 +72,7 @@ function Home(props) {
           }, 3000);
         }
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   const restoreData = () => {
@@ -81,7 +80,7 @@ function Home(props) {
     window.location.reload();
   };
 
-  const userListDisplay = userList.slice(0, 5).map(item => (
+  const userListDisplay = userList.slice(0, 5).map((item) => (
     <div className="userContainer" key={item.id + item.first_name}>
       <h2>Nombre: {item.first_name}</h2>
       <Row justify="space-around">
@@ -98,10 +97,12 @@ function Home(props) {
     </div>
   ));
 
+  console.log(userListDisplay, userList);
+
   return (
     <div>
       {!editMode && (
-        <Col xs={{span: 24}} lg={{span: 12, offset: 6}}>
+        <Col xs={{ span: 24 }} lg={{ span: 12, offset: 6 }}>
           <h1>Listado de Usuarios</h1>
           {userListDisplay}
           {showDeleted && !detailsMode && (
@@ -120,9 +121,9 @@ function Home(props) {
       )}
 
       <Divider dashed />
-      <Col xs={{span: 24}} lg={{span: 12, offset: 6}}>
+      <Col xs={{ span: 24 }} lg={{ span: 12, offset: 6 }}>
         <Row justify="space-around">
-          <Typography type="secondary" style={{textAlign: "justify"}}>
+          <Typography type="secondary" style={{ textAlign: "justify" }}>
             Desde el menú y los botones se puede modificar los datos, que
             quedarán guardados en una copia local (la API no persiste las
             modificaciones). En caso de querer restaurarlos desde la API
