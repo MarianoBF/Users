@@ -4,7 +4,7 @@ import {Col, Button, Alert, Select} from "antd";
 import useMounted from "../hooks/useMounted";
 import {useHistory, useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
-import UserForm from "./UserForm/UserForm";
+import UserForm from "../components/UserForm";
 
 function EditUser() {
   const history = useHistory();

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import UsersDataService from "../services/users.service";
-import Details from "./Details";
+import Details from "../components/Details";
 import { Button, Col, Row, Alert, Divider, Typography } from "antd";
 import { Link } from "react-router-dom";
 

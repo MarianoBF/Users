@@ -3,7 +3,7 @@ import UsersDataService from "../services/users.service";
 import {Col, Alert} from "antd";
 import useMounted from "../hooks/useMounted";
 import {useHistory} from "react-router-dom";
-import UserForm from "./UserForm/UserForm";
+import UserForm from "../components/UserForm";
 
 function AddUser() {
   const history = useHistory();
